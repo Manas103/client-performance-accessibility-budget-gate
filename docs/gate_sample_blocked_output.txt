@@ -1,0 +1,7 @@
+PASS  bundle
+FAIL  virtualization
+      virtualization budget exceeded on /friends with 1,000 entries: 1000 DOM rows rendered against a 150-row threshold
+PASS  focus
+PASS  contrast
+
+Gate FAILED.

@@ -1,0 +1,5 @@
+Seeded regressions blocked with the correct budget named: 30/30
+False blocks across clean builds: 0/40
+
+Seeded regressions not correctly blocked:
+Clean builds falsely blocked:

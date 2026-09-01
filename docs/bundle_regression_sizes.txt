@@ -1,0 +1,35 @@
+Bundle-budget regression sizes (gzip, per route entry chunk), measured on this machine.
+Budget: 30 KB gzip per route (see gate.config.json bundleBudgetNote).
+
+== bundle-01-embedded-font ==
+[2mdist/[22m[36massets/PartyRoute-CHz7GIHu.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/FriendsRoute--jP-Lvid.js  [39m[1m[2m240.46 kB[22m[1m[22m[2m │ gzip: 176.61 kB[22m
+
+== bundle-02-inline-avatars ==
+[2mdist/[22m[36massets/PartyRoute-DMZMKSAg.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-Dp7oFSDo.js  [39m[1m[2m251.53 kB[22m[1m[22m[2m │ gzip: 184.48 kB[22m
+
+== bundle-03-duplicate-seed-dataset ==
+[2mdist/[22m[36massets/PartyRoute-esDK8nZw.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-B4jTSuXO.js  [39m[1m[2m358.75 kB[22m[1m[22m[2m │ gzip: 100.10 kB[22m
+
+== bundle-04-moment-full ==
+[2mdist/[22m[36massets/PartyRoute-D1n0DIAz.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-4Gtp5ZAL.js  [39m[1m[2m140.48 kB[22m[1m[22m[2m │ gzip:  44.64 kB[22m
+
+== bundle-05-icon-barrel ==
+[2mdist/[22m[36massets/FriendsRoute-CrILPpUG.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
+[2mdist/[22m[36massets/PartyRoute-D6y5I0Wg.js    [39m[1m[2m198.94 kB[22m[1m[22m[2m │ gzip:  68.04 kB[22m
+
+== bundle-06-locale-table ==
+[2mdist/[22m[36massets/FriendsRoute-Bd02Fo0E.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
+[2mdist/[22m[36massets/PartyRoute-kbfXJR6h.js    [39m[1m[2m236.85 kB[22m[1m[22m[2m │ gzip:  50.64 kB[22m
+
+== bundle-07-generated-palette ==
+[2mdist/[22m[36massets/FriendsRoute-BSUBGBLd.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
+[2mdist/[22m[36massets/PartyRoute-CaAqghdi.js    [39m[1m[2m372.36 kB[22m[1m[22m[2m │ gzip:  46.44 kB[22m
+
+== bundle-08-debug-devtools ==
+[2mdist/[22m[36massets/FriendsRoute-BKMml3Q0.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
+[2mdist/[22m[36massets/PartyRoute-Bfevb7s8.js    [39m[1m[2m166.40 kB[22m[1m[22m[2m │ gzip:  48.77 kB[22m
+
