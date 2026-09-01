@@ -1,0 +1,30 @@
+name: Budget gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build the clean fixture app
+        env:
+          VARIANT_ID: clean-01
+        run: npm run build
+
+      - name: Run the budget gate against the clean build
+        run: npm run gate

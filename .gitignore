@@ -1,0 +1,12 @@
+node_modules/
+# regenerate with: npm run build (fixture-app dist for the currently selected VARIANT_ID)
+dist/
+fixture-app/dist/
+*.tsbuildinfo
+coverage/
+playwright-report/
+test-results/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
