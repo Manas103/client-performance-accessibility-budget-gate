@@ -1,0 +1,31 @@
+{
+  "name": "client-performance-accessibility-budget-gate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CI gate that fails a build when a route crosses its JS bundle budget, a long list renders unvirtualized, or a component loses keyboard focus or WCAG AA contrast.",
+  "type": "module",
+  "scripts": {
+    "dev": "cd fixture-app && vite",
+    "build": "cd fixture-app && vite build",
+    "gate": "node scripts/run-gate.mjs",
+    "matrix": "node scripts/run-regression-matrix.mjs",
+    "gen-variants": "node scripts/gen-variants.mjs",
+    "test": "vitest run",
+    "playwright:install": "playwright install chromium"
+  },
+  "dependencies": {
+    "moment": "2.30.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.1",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.3",
+    "playwright": "1.49.0",
+    "typescript": "5.6.3",
+    "vite": "5.4.11",
+    "vitest": "2.1.5"
+  }
+}
