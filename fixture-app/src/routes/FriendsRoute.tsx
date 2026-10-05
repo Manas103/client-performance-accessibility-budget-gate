@@ -30,7 +30,7 @@ export default function FriendsRoute() {
 
   return (
     <main style={{ background: theme.bg, color: theme.text, minHeight: '100vh', padding: 16 }}>
-      <h1 style={{ color: theme.headingText }}>Friends</h1>
+      <h1 style={{ color: theme.headingText }}>Image Feed</h1>
       {bloatPayload ? (
         <span data-testid="bloat-marker" style={{ display: 'none' }}>
           {typeof bloatPayload === 'string' ? bloatPayload : JSON.stringify(bloatPayload)}

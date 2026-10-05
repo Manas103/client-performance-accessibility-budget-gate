@@ -1,3 +1,7 @@
+
+> client-performance-accessibility-budget-gate@1.0.0 gate
+> node scripts/run-gate.mjs
+
 PASS  bundle
 PASS  virtualization
 PASS  focus

@@ -1,9 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
-import type { CSSProperties } from 'react';
-import { FriendRow } from './FriendRow';
+import { FeedTile } from './FeedTile';
 import { virtualizationMode } from '../variantConfig';
 import type { Friend } from '../data/friends';
 import type { ThemeTokens } from '../theme';
+import {
+  computeMasonryLayout,
+  columnContentHeight,
+  visibleTileIndices,
+  MASONRY_COLUMNS,
+  MASONRY_GAP,
+} from './masonryLayout';
 
 type Props = {
   friends: Friend[];
@@ -11,28 +17,55 @@ type Props = {
   theme: ThemeTokens;
 };
 
-const ROW_HEIGHT = 48;
+const TILE_WIDTH = 160;
 const CONTAINER_HEIGHT = 640;
-const OVERSCAN = 10;
-// Below this length the app renders every row directly; a short list does not need
-// windowing machinery. The gate's virtualization check always requests 1,000 friends via
-// ?count=1000 regardless of a variant's own default, so this constant only affects the
+// 1,050px of preload buffer above and below the viewport, roughly 1.6 viewport-heights each
+// side. A text row list can get away with a 10-row overscan because a row is nearly free to
+// mount; an image tile is not, so the feed trades a larger pixel-based overscan budget for
+// keeping tiles decoded before they scroll into view. See gate.config.json's
+// virtualizationNote for the measured mounted-tile count this produces.
+const OVERSCAN_PX = 1050;
+// Below this the app renders every tile directly (no windowing machinery needed for a
+// short feed). The gate's virtualization check always requests 10,000 items via
+// ?count=10000 regardless of a variant's own default, so this constant only affects the
 // app's own default behavior at small sizes, never what the gate measures.
 const VIRTUALIZE_AT = 150;
+const GRID_WIDTH = MASONRY_COLUMNS * (TILE_WIDTH + MASONRY_GAP) - MASONRY_GAP;
+
+function tileStyle(top: number, column: number, height: number) {
+  return {
+    top,
+    left: column * (TILE_WIDTH + MASONRY_GAP),
+    width: TILE_WIDTH,
+    height,
+  };
+}
 
 function renderPlain(list: Friend[], theme: ThemeTokens) {
+  const perColumn = computeMasonryLayout(list.length);
+  const contentHeight = columnContentHeight(perColumn);
+  const tiles = perColumn.flat();
   return (
     <div style={{ height: CONTAINER_HEIGHT, overflowY: 'auto' }}>
-      {list.map((f, i) => (
-        <FriendRow key={f.id} friend={f} isFirst={i === 0} theme={theme} />
-      ))}
+      <div style={{ position: 'relative', width: GRID_WIDTH, height: contentHeight }}>
+        {tiles.map((tile) => (
+          <FeedTile
+            key={list[tile.index].id}
+            friend={list[tile.index]}
+            isFirst={tile.index === 0}
+            theme={theme}
+            style={tileStyle(tile.top, tile.column, tile.height)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 // Correct ('ok') behavior: below VIRTUALIZE_AT, render everything (no windowing needed for
-// a short list). At or above it, render only the rows within CONTAINER_HEIGHT plus an
-// OVERSCAN buffer above and below, recomputed on scroll.
+// a short feed). At or above it, lay out every item into a 7-column masonry grid
+// (masonryLayout.ts), then mount only the tiles whose span overlaps the visible viewport
+// plus OVERSCAN_PX, recomputed on scroll.
 //
 // Every mode below is a distinct, real way real teams break this, each isolated so exactly
 // one thing is wrong per mode; every mode changes what is actually mounted, not just a flag.
@@ -63,15 +96,15 @@ export function FriendsList({ friends, searchTerm, theme }: Props) {
     return renderPlain(filtered, theme);
   }
 
-  if (virtualizationMode === 'threshold-too-high' && filtered.length < 5000) {
-    // Bug: the enable-windowing threshold was bumped to 5,000 "temporarily" and never
-    // reverted, so a 1,000-row list still renders unwindowed.
+  if (virtualizationMode === 'threshold-too-high' && filtered.length < 50_000) {
+    // Bug: the enable-windowing threshold was bumped to 50,000 "temporarily" and never
+    // reverted, so a 10,000-item feed still renders unwindowed.
     return renderPlain(filtered, theme);
   }
 
   if (virtualizationMode === 'disabled-flag') {
     // Bug: a feature flag meant only for local debugging was left forced off in the built
-    // app, so windowing never engages regardless of list length.
+    // app, so windowing never engages regardless of feed length.
     const FORCE_VIRTUALIZE = false;
     if (!FORCE_VIRTUALIZE) return renderPlain(filtered, theme);
   }
@@ -87,27 +120,31 @@ export function FriendsList({ friends, searchTerm, theme }: Props) {
     return renderPlain(filtered, theme);
   }
 
-  let overscan = OVERSCAN;
+  // Not memoized, to match the rest of this component: every branch above returns before a
+  // single hook is called conditionally, so this stays a plain computation, not a hook.
+  const perColumn = computeMasonryLayout(filtered.length);
+  const contentHeight = columnContentHeight(perColumn);
+
+  let overscanPx = OVERSCAN_PX;
   if (virtualizationMode === 'overscan-explosion') {
-    // Bug: overscan was set to the full list length "to be safe", which defeats windowing.
-    overscan = filtered.length;
+    // Bug: overscan was set to the full content height "to be safe", which defeats
+    // windowing: every tile's span then overlaps the window.
+    overscanPx = contentHeight;
   }
 
-  let visibleCount = Math.ceil(CONTAINER_HEIGHT / ROW_HEIGHT) + overscan * 2;
+  let viewportHeight = CONTAINER_HEIGHT;
   if (virtualizationMode === 'nan-fallback-full-render') {
     // Bug: container height is read from a ref before it is attached on first render,
-    // producing 0 / ROW_HEIGHT = 0 rows, and the fallback for that zero is wrong: instead of
-    // a sane default visible count, it falls back to rendering the entire list.
+    // producing a 0px viewport, and the fallback for that zero is wrong: instead of a sane
+    // default viewport height, it falls back to rendering the entire feed.
     const measuredHeight = 0; // simulates reading containerRef.current.clientHeight too early
-    const computed = Math.ceil(measuredHeight / ROW_HEIGHT);
-    visibleCount = computed <= 0 ? filtered.length : computed + overscan * 2;
+    if (measuredHeight <= 0) {
+      return renderPlain(filtered, theme);
+    }
+    viewportHeight = measuredHeight;
   }
 
-  const start = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - overscan);
-  const end = Math.min(filtered.length, start + visibleCount);
-  const visible = filtered.slice(start, end);
-  const topPad = start * ROW_HEIGHT;
-  const bottomPad = (filtered.length - end) * ROW_HEIGHT;
+  const visible = visibleTileIndices(perColumn, scrollTop, viewportHeight, overscanPx);
 
   const windowedView = (
     <div
@@ -115,24 +152,36 @@ export function FriendsList({ friends, searchTerm, theme }: Props) {
       onScroll={(e) => setScrollTop((e.target as HTMLDivElement).scrollTop)}
       style={{ height: CONTAINER_HEIGHT, overflowY: 'auto' }}
     >
-      <div style={{ height: topPad } as CSSProperties} />
-      {visible.map((f, i) => (
-        <FriendRow key={f.id} friend={f} isFirst={start + i === 0} theme={theme} />
-      ))}
-      <div style={{ height: bottomPad } as CSSProperties} />
+      <div style={{ position: 'relative', width: GRID_WIDTH, height: contentHeight }}>
+        {visible.map((tile) => (
+          <FeedTile
+            key={filtered[tile.index].id}
+            friend={filtered[tile.index]}
+            isFirst={tile.index === 0}
+            theme={theme}
+            style={tileStyle(tile.top, tile.column, tile.height)}
+          />
+        ))}
+      </div>
     </div>
   );
 
   if (virtualizationMode === 'duplicate-render-print-view') {
     // Bug: a "print view" block was meant to be display:none outside of @media print, but
-    // the class was misapplied, so it renders every row a second time, visibly, in addition
-    // to the correctly windowed list above it.
+    // the class was misapplied, so it renders every tile a second time, visibly, in addition
+    // to the correctly windowed grid above it.
     return (
       <>
         {windowedView}
         <div data-testid="print-view">
-          {filtered.map((f) => (
-            <FriendRow key={`print-${f.id}`} friend={f} isFirst={false} theme={theme} />
+          {perColumn.flat().map((tile) => (
+            <FeedTile
+              key={`print-${filtered[tile.index].id}`}
+              friend={filtered[tile.index]}
+              isFirst={false}
+              theme={theme}
+              style={{ position: 'static', display: 'inline-block', width: TILE_WIDTH, height: tile.height, margin: 4 }}
+            />
           ))}
         </div>
       </>

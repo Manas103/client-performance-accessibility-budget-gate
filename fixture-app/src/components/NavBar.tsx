@@ -39,7 +39,7 @@ export function NavBar({ active, onNavigate, theme }: Props) {
             fontWeight: active === route ? 700 : 400,
           }}
         >
-          {route === 'friends' ? 'Friends' : 'Party'}
+          {route === 'friends' ? 'Image Feed' : 'Party'}
         </button>
       ))}
     </nav>

@@ -1,0 +1,27 @@
+Virtualization check measurement, clean-01 variant, this machine (Windows 11, Node v22.17.1,
+Playwright 1.49.0 bundled Chromium headless).
+
+Loaded the image feed (/#/friends?count=10000), waited 150ms, scrolled the feed's own
+scroll container to scrollHeight / 2 (a mid-feed, steady-state scroll position, not the top
+edge), waited another 150ms, then counted [data-feed-item] DOM nodes.
+
+Command (equivalent to what gate/checkVirtualization.mjs does against a running preview
+server):
+  node scripts/_probe_tmp.mjs   (ad hoc probe script, not committed; calls
+  gate/checkVirtualization.mjs directly against fixture-app/dist for the clean-01 build)
+
+Result:
+{
+  "check": "virtualization",
+  "pass": true,
+  "renderedRowCount": 142,
+  "threshold": 400,
+  "failureMessages": []
+}
+
+A second run at a slightly different scroll offset (scrollHeight / 2 computed from a
+different variant's taller/shorter content) measured 144-147 mounted tiles in earlier
+calibration runs (see masonryLayout.ts's OVERSCAN_PX comment for the arithmetic). "Roughly
+140-145 tiles" is the stable range at steady-state scroll; the exact count depends on which
+7 tiles are mid-column at the sampled scroll offset, since columns are not perfectly
+height-synchronized.

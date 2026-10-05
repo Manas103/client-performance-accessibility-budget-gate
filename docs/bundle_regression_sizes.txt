@@ -2,34 +2,34 @@ Bundle-budget regression sizes (gzip, per route entry chunk), measured on this m
 Budget: 30 KB gzip per route (see gate.config.json bundleBudgetNote).
 
 == bundle-01-embedded-font ==
-[2mdist/[22m[36massets/PartyRoute-CHz7GIHu.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
-[2mdist/[22m[36massets/FriendsRoute--jP-Lvid.js  [39m[1m[2m240.46 kB[22m[1m[22m[2m │ gzip: 176.61 kB[22m
+[2mdist/[22m[36massets/PartyRoute-d4S2O-U_.js    [39m[1m[2m  6.73 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-W6HHphTm.js  [39m[1m[2m242.14 kB[22m[1m[22m[2m │ gzip: 177.30 kB[22m
 
 == bundle-02-inline-avatars ==
-[2mdist/[22m[36massets/PartyRoute-DMZMKSAg.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
-[2mdist/[22m[36massets/FriendsRoute-Dp7oFSDo.js  [39m[1m[2m251.53 kB[22m[1m[22m[2m │ gzip: 184.48 kB[22m
+[2mdist/[22m[36massets/PartyRoute-Bk5QpTzA.js    [39m[1m[2m  6.73 kB[22m[1m[22m[2m │ gzip:   1.47 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-BkQ366-K.js  [39m[1m[2m253.20 kB[22m[1m[22m[2m │ gzip: 185.15 kB[22m
 
 == bundle-03-duplicate-seed-dataset ==
-[2mdist/[22m[36massets/PartyRoute-esDK8nZw.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
-[2mdist/[22m[36massets/FriendsRoute-B4jTSuXO.js  [39m[1m[2m358.75 kB[22m[1m[22m[2m │ gzip: 100.10 kB[22m
+[2mdist/[22m[36massets/PartyRoute-FtNVU8Sx.js    [39m[1m[2m  6.73 kB[22m[1m[22m[2m │ gzip:   1.47 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-DDNmdhg4.js  [39m[1m[2m360.43 kB[22m[1m[22m[2m │ gzip: 100.79 kB[22m
 
 == bundle-04-moment-full ==
-[2mdist/[22m[36massets/PartyRoute-D1n0DIAz.js    [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
-[2mdist/[22m[36massets/FriendsRoute-4Gtp5ZAL.js  [39m[1m[2m140.48 kB[22m[1m[22m[2m │ gzip:  44.64 kB[22m
+[2mdist/[22m[36massets/PartyRoute-CAkG3QkP.js    [39m[1m[2m  6.73 kB[22m[1m[22m[2m │ gzip:   1.47 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-YttBVqXY.js  [39m[1m[2m142.18 kB[22m[1m[22m[2m │ gzip:  45.25 kB[22m
 
 == bundle-05-icon-barrel ==
-[2mdist/[22m[36massets/FriendsRoute-CrILPpUG.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
-[2mdist/[22m[36massets/PartyRoute-D6y5I0Wg.js    [39m[1m[2m198.94 kB[22m[1m[22m[2m │ gzip:  68.04 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-DyZFKyRv.js  [39m[1m[2m 11.82 kB[22m[1m[22m[2m │ gzip:   3.02 kB[22m
+[2mdist/[22m[36massets/PartyRoute-BJHqnU4q.js    [39m[1m[2m199.26 kB[22m[1m[22m[2m │ gzip:  68.06 kB[22m
 
 == bundle-06-locale-table ==
-[2mdist/[22m[36massets/FriendsRoute-Bd02Fo0E.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
-[2mdist/[22m[36massets/PartyRoute-kbfXJR6h.js    [39m[1m[2m236.85 kB[22m[1m[22m[2m │ gzip:  50.64 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-DAS5MxYh.js  [39m[1m[2m 11.82 kB[22m[1m[22m[2m │ gzip:   3.02 kB[22m
+[2mdist/[22m[36massets/PartyRoute-DA797-qd.js    [39m[1m[2m237.17 kB[22m[1m[22m[2m │ gzip:  50.66 kB[22m
 
 == bundle-07-generated-palette ==
-[2mdist/[22m[36massets/FriendsRoute-BSUBGBLd.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
-[2mdist/[22m[36massets/PartyRoute-CaAqghdi.js    [39m[1m[2m372.36 kB[22m[1m[22m[2m │ gzip:  46.44 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-BB1-1PyM.js  [39m[1m[2m 11.82 kB[22m[1m[22m[2m │ gzip:   3.02 kB[22m
+[2mdist/[22m[36massets/PartyRoute-Becn42vc.js    [39m[1m[2m372.68 kB[22m[1m[22m[2m │ gzip:  46.46 kB[22m
 
 == bundle-08-debug-devtools ==
-[2mdist/[22m[36massets/FriendsRoute-BKMml3Q0.js  [39m[1m[2m 10.16 kB[22m[1m[22m[2m │ gzip:   2.44 kB[22m
-[2mdist/[22m[36massets/PartyRoute-Bfevb7s8.js    [39m[1m[2m166.40 kB[22m[1m[22m[2m │ gzip:  48.77 kB[22m
+[2mdist/[22m[36massets/FriendsRoute-C3iRGZ4s.js  [39m[1m[2m 11.82 kB[22m[1m[22m[2m │ gzip:   3.02 kB[22m
+[2mdist/[22m[36massets/PartyRoute-CICkfxPU.js    [39m[1m[2m166.73 kB[22m[1m[22m[2m │ gzip:  48.79 kB[22m
 

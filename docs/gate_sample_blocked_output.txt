@@ -1,6 +1,10 @@
+
+> client-performance-accessibility-budget-gate@1.0.0 gate
+> node scripts/run-gate.mjs
+
 PASS  bundle
 FAIL  virtualization
-      virtualization budget exceeded on /friends with 1,000 entries: 1000 DOM rows rendered against a 150-row threshold
+      virtualization budget exceeded on the image feed with 10,000 entries: 10000 DOM tiles rendered against a 400-tile threshold
 PASS  focus
 PASS  contrast
 

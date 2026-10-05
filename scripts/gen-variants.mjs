@@ -39,21 +39,28 @@ const bundleRegressions = [
 }));
 
 const virtRegressions = [
-  ['no-windowing', 'The friends list renders all 1,000 rows directly with no windowing at all'],
-  ['threshold-too-high', 'The enable-windowing threshold was left at 5,000, so 1,000 rows still render unwindowed'],
+  ['no-windowing', 'The masonry image feed renders all 10,000 tiles directly with no windowing at all'],
+  ['threshold-too-high', 'The enable-windowing threshold was left at 50,000, so 10,000 tiles still render unwindowed'],
   ['disabled-flag', 'A debug-only feature flag forcing windowing off was left enabled in the production build'],
-  ['overscan-explosion', 'Windowing overscan is set to the full list length, defeating windowing in practice'],
-  ['nan-fallback-full-render', 'A zero-height container read falls back to rendering the entire list instead of a sane default'],
+  ['overscan-explosion', 'Windowing overscan is set to the full feed height, defeating windowing in practice'],
+  ['nan-fallback-full-render', 'A zero-height container read falls back to rendering the entire feed instead of a sane default'],
   ['filter-bug-full-render', 'An empty search term bypasses windowing entirely and renders the raw full array'],
-  ['duplicate-render-print-view', 'A misapplied print-only class renders every row a second time, visibly, alongside the windowed list'],
-  ['eager-load-more-all', 'An infinite-scroll loader is missing its page-size cap and loads all 1,000 rows on mount'],
+  ['duplicate-render-print-view', 'A misapplied print-only class renders every tile a second time, visibly, alongside the windowed grid'],
+  ['eager-load-more-all', 'An infinite-scroll loader is missing its page-size cap and loads all 10,000 tiles on mount'],
 ].map(([id, desc], i) => ({
   id: `virt-${String(i + 1).padStart(2, '0')}-${id}`,
   category: 'virtualization',
   name: desc,
   expected_result: 'fail',
   expected_failing_check: 'virtualization',
-  ...base({ route: 'friends', friendCount: 1000, virtualizationMode: id }),
+  // friendCount stays at base()'s small default here on purpose: checkVirtualization.mjs
+  // always overrides with its own ?count=10000 regardless of this field (see its comment),
+  // so this field only ever affects the app's own default render that checkFocus and
+  // checkContrast exercise on /friends for every variant. Setting it to 10,000 here would
+  // make every one of those checks mount and keyboard-tab through roughly 20,000 focusable
+  // elements per virtualization-regression variant, 8 variants' worth, for zero gain: the
+  // actual virtualization measurement never reads this field.
+  ...base({ route: 'friends', virtualizationMode: id }),
 }));
 
 const focusRegressions = [
